@@ -1,0 +1,26 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  site-url: "https://abhishekbaraili.github.io"
+  title: "Abhishek Baraili"
+  navbar:
+    left:
+      - text: Home
+        href: index.qmd
+      - text: Blog
+        href: posts/index.qmd
+    right:
+      - icon: github
+        href: https://github.com/abhishekbaraili
+      - icon: envelope
+        href: mailto:abhishek_becon2022@kusoa.edu.np
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+
+execute:
+  freeze: auto
