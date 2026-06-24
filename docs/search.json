@@ -11,7 +11,7 @@
     "href": "index.html#photos",
     "title": "Abhishek Baraili",
     "section": "Photos",
-    "text": "Photos\n\n\n\n&lt;button type=\"button\" data-bs-target=\"#photoCarousel\" data-bs-slide-to=\"0\" class=\"active\" aria-label=\"Photo 1\"&gt;&lt;/button&gt;\n&lt;button type=\"button\" data-bs-target=\"#photoCarousel\" data-bs-slide-to=\"1\" aria-label=\"Photo 2\"&gt;&lt;/button&gt;\n&lt;button type=\"button\" data-bs-target=\"#photoCarousel\" data-bs-slide-to=\"2\" aria-label=\"Photo 3\"&gt;&lt;/button&gt;\n\n\n&lt;div class=\"carousel-item active\"&gt;\n  &lt;img src=\"photos/cafe.jpg\" class=\"d-block w-100\" style=\"height: 420px; object-fit: cover;\" alt=\"Cafe\"&gt;\n&lt;/div&gt;\n&lt;div class=\"carousel-item\"&gt;\n  &lt;img src=\"photos/guitar.jpg\" class=\"d-block w-100\" style=\"height: 420px; object-fit: cover;\" alt=\"Guitar\"&gt;\n&lt;/div&gt;\n&lt;div class=\"carousel-item\"&gt;\n  &lt;img src=\"photos/scene.jpg\" class=\"d-block w-100\" style=\"height: 420px; object-fit: cover;\" alt=\"Scene\"&gt;\n&lt;/div&gt;\n\n  Previous    Next"
+    "text": "Photos\n\n\n  \n    \n    \n    \n  \n  \n    \n      \n    \n    \n      \n    \n    \n      \n    \n  \n  \n    \n    Previous\n  \n  \n    \n    Next"
   },
   {
     "objectID": "posts/zonal-stats/index.html",

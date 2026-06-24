@@ -25,6 +25,7 @@ and whatever it takes in R, Python, or Stata to answer it. Some work, some don't
 
 ## Photos
 
+```{=html}
 <div style="max-width: 640px; margin: 1.5rem auto;">
 <div id="photoCarousel" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-indicators">
@@ -53,3 +54,4 @@ and whatever it takes in R, Python, or Stata to answer it. Some work, some don't
   </button>
 </div>
 </div>
+```
