@@ -1,13 +1,12 @@
 ---
-title: "Abhishek Baraili"
+pagetitle: "Abhishek Baraili"
 page-layout: full
-title-block-style: none
 ---
 
 ```{=html}
-<div style="display:flex; flex-wrap:wrap; gap:2.5rem; align-items:center; margin-top:1.5rem;">
+<div style="display:flex; flex-wrap:wrap; gap:2.5rem; align-items:center; margin-top:1rem;">
 
-  <div style="flex:1 1 320px; min-width:300px;">
+  <div style="flex:1 1 340px; min-width:300px; max-width:480px;">
     <div id="photoCarousel" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-indicators">
         <button type="button" data-bs-target="#photoCarousel" data-bs-slide-to="0" class="active" aria-label="Photo 1"></button>
@@ -17,16 +16,16 @@ title-block-style: none
       </div>
       <div class="carousel-inner" style="border-radius:10px;">
         <div class="carousel-item active">
-          <img src="profile.jpg" class="d-block w-100" alt="Abhishek">
+          <img src="profile.jpg" class="d-block w-100" style="height:480px; object-fit:cover;" alt="Abhishek">
         </div>
         <div class="carousel-item">
-          <img src="photos/scene.jpg" class="d-block w-100" alt="Scene">
+          <img src="photos/scene.jpg" class="d-block w-100" style="height:480px; object-fit:cover;" alt="Scene">
         </div>
         <div class="carousel-item">
-          <img src="photos/cafe.jpg" class="d-block w-100" alt="Cafe">
+          <img src="photos/cafe.jpg" class="d-block w-100" style="height:480px; object-fit:cover;" alt="Cafe">
         </div>
         <div class="carousel-item">
-          <img src="photos/guitar.jpg" class="d-block w-100" alt="Guitar">
+          <img src="photos/guitar.jpg" class="d-block w-100" style="height:480px; object-fit:cover;" alt="Guitar">
         </div>
       </div>
       <button class="carousel-control-prev" type="button" data-bs-target="#photoCarousel" data-bs-slide="prev">
@@ -40,7 +39,7 @@ title-block-style: none
     </div>
   </div>
 
-  <div style="flex:1 1 320px; min-width:300px;">
+  <div style="flex:1 1 340px; min-width:300px;">
     <h1 style="margin-top:0;">Abhishek Baraili</h1>
 
     <p style="margin-bottom:1.2rem;">
