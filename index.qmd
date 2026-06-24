@@ -1,5 +1,7 @@
 ---
 title: "Abhishek Baraili"
+page-layout: full
+title-block-style: none
 ---
 
 ```{=html}
