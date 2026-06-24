@@ -1,57 +1,56 @@
 ---
 title: "Abhishek Baraili"
-image: profile.jpg
-about:
-  template: solana
-  image-shape: round
-  image-width: 15em
-  links:
-    - icon: github
-      text: GitHub
-      href: https://github.com/abhishekbaraili
-    - icon: linkedin
-      text: LinkedIn
-      href: https://www.linkedin.com/in/REPLACE-ME
-    - icon: envelope
-      text: Email
-      href: "mailto:abhishek_becon2022@kusoa.edu.np"
 ---
 
-I am a final-year economics undergraduate. I work on applied statistics and
-causal inference, mostly with Nepali data.
-
-This site is where I write up short projects: one question, a research design,
-and whatever it takes in R, Python, or Stata to answer it. Some work, some don't.
-
-## Photos
-
 ```{=html}
-<div style="max-width: 640px; margin: 1.5rem auto;">
-<div id="photoCarousel" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-indicators">
-    <button type="button" data-bs-target="#photoCarousel" data-bs-slide-to="0" class="active" aria-label="Photo 1"></button>
-    <button type="button" data-bs-target="#photoCarousel" data-bs-slide-to="1" aria-label="Photo 2"></button>
-    <button type="button" data-bs-target="#photoCarousel" data-bs-slide-to="2" aria-label="Photo 3"></button>
+<div style="display:flex; flex-wrap:wrap; gap:2.5rem; align-items:center; margin-top:1.5rem;">
+
+  <div style="flex:1 1 320px; min-width:300px;">
+    <div id="photoCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#photoCarousel" data-bs-slide-to="0" class="active" aria-label="Photo 1"></button>
+        <button type="button" data-bs-target="#photoCarousel" data-bs-slide-to="1" aria-label="Photo 2"></button>
+        <button type="button" data-bs-target="#photoCarousel" data-bs-slide-to="2" aria-label="Photo 3"></button>
+        <button type="button" data-bs-target="#photoCarousel" data-bs-slide-to="3" aria-label="Photo 4"></button>
+      </div>
+      <div class="carousel-inner" style="border-radius:10px;">
+        <div class="carousel-item active">
+          <img src="profile.jpg" class="d-block w-100" alt="Abhishek">
+        </div>
+        <div class="carousel-item">
+          <img src="photos/scene.jpg" class="d-block w-100" alt="Scene">
+        </div>
+        <div class="carousel-item">
+          <img src="photos/cafe.jpg" class="d-block w-100" alt="Cafe">
+        </div>
+        <div class="carousel-item">
+          <img src="photos/guitar.jpg" class="d-block w-100" alt="Guitar">
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#photoCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#photoCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
   </div>
-  <div class="carousel-inner" style="border-radius: 8px;">
-    <div class="carousel-item active">
-      <img src="photos/cafe.jpg" class="d-block w-100" style="height: 420px; object-fit: cover;" alt="Cafe">
-    </div>
-    <div class="carousel-item">
-      <img src="photos/guitar.jpg" class="d-block w-100" style="height: 420px; object-fit: cover;" alt="Guitar">
-    </div>
-    <div class="carousel-item">
-      <img src="photos/scene.jpg" class="d-block w-100" style="height: 420px; object-fit: cover;" alt="Scene">
-    </div>
+
+  <div style="flex:1 1 320px; min-width:300px;">
+    <h1 style="margin-top:0;">Abhishek Baraili</h1>
+
+    <p style="margin-bottom:1.2rem;">
+      <a href="https://github.com/abhishekbaraili" class="btn btn-outline-dark btn-sm"><i class="bi bi-github"></i> GitHub</a>
+      <a href="https://www.linkedin.com/in/REPLACE-ME" class="btn btn-outline-dark btn-sm"><i class="bi bi-linkedin"></i> LinkedIn</a>
+      <a href="mailto:abhishek_becon2022@kusoa.edu.np" class="btn btn-outline-dark btn-sm"><i class="bi bi-envelope"></i> Email</a>
+    </p>
+
+    <p>I am a final-year economics undergraduate. I work on applied statistics and causal inference, mostly with Nepali data.</p>
+
+    <p>This site is where I write up short projects: one question, a research design, and whatever it takes in R, Python, or Stata to answer it. Some work, some don't.</p>
   </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#photoCarousel" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#photoCarousel" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div>
+
 </div>
 ```
