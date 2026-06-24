@@ -4,7 +4,7 @@ page-layout: full
 ---
 
 ```{=html}
-<div style="display:flex; flex-wrap:wrap; gap:2.5rem; align-items:center; margin-top:1rem;">
+<div style="display:flex; flex-wrap:wrap; gap:2.5rem; align-items:flex-start; margin-top:1rem;">
 
   <div style="flex:1 1 340px; min-width:300px; max-width:480px;">
     <div id="photoCarousel" class="carousel slide" data-bs-ride="carousel">
