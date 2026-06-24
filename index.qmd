@@ -44,7 +44,7 @@ page-layout: full
 
     <p style="margin-bottom:1.2rem;">
       <a href="https://github.com/abhishekbaraili" class="btn btn-outline-dark btn-sm"><i class="bi bi-github"></i> GitHub</a>
-      <a href="https://www.linkedin.com/in/REPLACE-ME" class="btn btn-outline-dark btn-sm"><i class="bi bi-linkedin"></i> LinkedIn</a>
+      <a href="https://www.linkedin.com/in/abhishek-baraili-77b1aa29a/" class="btn btn-outline-dark btn-sm"><i class="bi bi-linkedin"></i> LinkedIn</a>
       <a href="mailto:abhishek_becon2022@kusoa.edu.np" class="btn btn-outline-dark btn-sm"><i class="bi bi-envelope"></i> Email</a>
     </p>
 
