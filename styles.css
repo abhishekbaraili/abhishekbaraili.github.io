@@ -1,1 +1,4 @@
 /* css styles */
+#title-block-header .description {
+  display: none;
+}

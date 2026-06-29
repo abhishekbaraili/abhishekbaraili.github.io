@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Abhishek Baraili">
+<meta name="dcterms.date" content="2026-06-28">
+<meta name="description" content="I thought ethnic diversity predicted clean cooking adoption across Nepal. Fixed effects killed that story in one regression.">
+
+<title>The diversity illusion: how a cross-sectional regression fooled me – Abhishek Baraili</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>
+.quarto-title .description { display: none; }
+.quarto-title .quarto-categories { display: none; }
+</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Abhishek Baraili</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../posts/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/abhishekbaraili"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="mailto:abhishek_becon2022@kusoa.edu.np"> <i class="bi bi-envelope" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#data" id="toc-data" class="nav-link active" data-scroll-target="#data">Data</a></li>
+  <li><a href="#models" id="toc-models" class="nav-link" data-scroll-target="#models">Models</a>
+  <ul class="collapse">
+  <li><a href="#model-1-pooled-ols" id="toc-model-1-pooled-ols" class="nav-link" data-scroll-target="#model-1-pooled-ols">Model 1: Pooled OLS</a></li>
+  <li><a href="#model-2-municipality-fixed-effects" id="toc-model-2-municipality-fixed-effects" class="nav-link" data-scroll-target="#model-2-municipality-fixed-effects">Model 2: Municipality Fixed Effects</a></li>
+  <li><a href="#seeing-the-difference" id="toc-seeing-the-difference" class="nav-link" data-scroll-target="#seeing-the-difference">Seeing the difference</a></li>
+  <li><a href="#model-3-adding-polarization" id="toc-model-3-adding-polarization" class="nav-link" data-scroll-target="#model-3-adding-polarization">Model 3: Adding Polarization</a></li>
+  </ul></li>
+  <li><a href="#grand-comparison" id="toc-grand-comparison" class="nav-link" data-scroll-target="#grand-comparison">Grand Comparison</a></li>
+  <li><a href="#what-i-take-from-this" id="toc-what-i-take-from-this" class="nav-link" data-scroll-target="#what-i-take-from-this">What I take from this</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">The diversity illusion: how a cross-sectional regression fooled me</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+  <div class="quarto-categories">
+    <div class="quarto-category">Stata</div>
+    <div class="quarto-category">Python</div>
+    <div class="quarto-category">Nepal</div>
+    <div class="quarto-category">causal inference</div>
+    <div class="quarto-category">spatial</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    I thought ethnic diversity predicted clean cooking adoption across Nepal. Fixed effects killed that story in one regression.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Abhishek Baraili </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 28, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>In Nepal, about 84% of households still cook with firewood.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> The health consequences are severe: indoor air pollution from solid fuel cooking kills more people in South Asia than malaria.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> The transition to clean cooking fuels like LPG, electricity, or biogas is one of the most basic development challenges the country faces, and it is happening unevenly. Some municipalities have almost fully transitioned. Others have barely started.</p>
+<p>I wanted to understand why. Specifically, I wanted to know whether the ethnic composition of a municipality, how diverse or divided its population is, has anything to do with how quickly it adopts clean cooking. There are good theoretical reasons to think it might. Ethnically fragmented communities may struggle to coordinate on public goods. Polarized communities, where two or three groups compete for political power, may generate electoral incentives that drive infrastructure investment.</p>
+<p>I built a panel dataset covering all 753 of Nepal’s municipalities across the 2011 and 2021 censuses and ran three regressions. The first one gave me a large, statistically significant, and completely misleading answer. The second one killed it. The third one replaced it with something I had not expected.</p>
+<p>This post is about how I got fooled by my own regression, and what I found when I looked more carefully.</p>
+<section id="data" class="level1">
+<h1>Data</h1>
+<p>The panel comes from CBS census microdata. I aggregated household-level records to the municipality level using a VDC-to-municipality crosswalk that maps all 3,906 old VDCs to the 753 new municipalities with 100% coverage. The unit of observation is a municipality-year pair: 753 municipalities observed in two census rounds, giving 1,506 observations.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>panel <span class="op">=</span> pd.read_csv(<span class="st">'panel_full.csv'</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Observations: </span><span class="sc">{</span><span class="bu">len</span>(panel)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Municipalities: </span><span class="sc">{</span>panel[<span class="st">'mnid'</span>]<span class="sc">.</span>nunique()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Years: </span><span class="sc">{</span><span class="bu">sorted</span>(panel[<span class="st">'year'</span>].unique())<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>Observations: 1506
+Municipalities: 753
+Years: [2011, 2021]</code></pre>
+<p>The outcome variable is <code>clean_cooking</code>: the share of households in each municipality using LPG, electricity, or biogas as their primary cooking fuel. The mean is 0.16. In a country of 30 million people, that number should bother you.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>panel[[<span class="st">'clean_cooking'</span>, <span class="st">'div_index'</span>, <span class="st">'pol_index'</span>]].describe().<span class="bu">round</span>(<span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>       clean_cooking  div_index  pol_index
+count       1506.000   1506.000   1506.000
+mean           0.160      0.608      0.665
+std            0.213      0.179      0.164
+min            0.000      0.013      0.027
+25%            0.024      0.519      0.586
+50%            0.071      0.638      0.703
+75%            0.209      0.733      0.784
+max            0.988      0.930      0.975</code></pre>
+<p>The key predictors are two measures of ethnic composition. The first is the standard Alesina et al.&nbsp;(1999) fractionalization index:<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<p><span class="math display">\[D = 1 - \sum_i s_i^2\]</span></p>
+<p>where <span class="math inline">\(s_i\)</span> is the population share of ethnic group <span class="math inline">\(i\)</span>. This measures the probability that two randomly selected individuals belong to different groups. It is highest when many small groups coexist, as they do in parts of the Terai where Tharu, Madhesi, Brahmin, Chhetri, Magar, and Dalit communities live side by side.</p>
+<p>The polarization index captures something different.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> It is highest not when there are many groups, but when the population splits evenly between a few large ones. A municipality that is 50% Brahmin-Chhetri and 50% Janajati is more polarized than one that has fifteen small ethnic groups, even though the latter is more diverse.</p>
+<p>These are not the same variable. Here is what they look like across Nepal:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">16</span>, <span class="dv">7</span>))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>merged.plot(column<span class="op">=</span><span class="st">'div_index'</span>, cmap<span class="op">=</span><span class="st">'PuBu'</span>, edgecolor<span class="op">=</span><span class="st">'grey'</span>, linewidth<span class="op">=</span><span class="fl">0.1</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>            legend<span class="op">=</span><span class="va">True</span>, ax<span class="op">=</span>axes[<span class="dv">0</span>], missing_kwds<span class="op">=</span>{<span class="st">'color'</span>: <span class="st">'lightgrey'</span>},</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>            legend_kwds<span class="op">=</span>{<span class="st">'label'</span>: <span class="st">'Diversity index'</span>, <span class="st">'shrink'</span>: <span class="fl">0.6</span>})</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Ethnic diversity index, 2021'</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axis(<span class="st">'off'</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>merged.plot(column<span class="op">=</span><span class="st">'pol_index'</span>, cmap<span class="op">=</span><span class="st">'OrRd'</span>, edgecolor<span class="op">=</span><span class="st">'grey'</span>, linewidth<span class="op">=</span><span class="fl">0.1</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>            legend<span class="op">=</span><span class="va">True</span>, ax<span class="op">=</span>axes[<span class="dv">1</span>], missing_kwds<span class="op">=</span>{<span class="st">'color'</span>: <span class="st">'lightgrey'</span>},</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>            legend_kwds<span class="op">=</span>{<span class="st">'label'</span>: <span class="st">'Polarization index'</span>, <span class="st">'shrink'</span>: <span class="fl">0.6</span>})</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Ethnic polarization index, 2021'</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].axis(<span class="st">'off'</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><img src="figures/map_diversity_polarization.png" class="img-fluid"></p>
+<p>The spatial patterns are visibly different. Diversity peaks in the Terai, the southern plains where migration and historical trade routes have mixed populations over centuries. Polarization is strongest in the mid-hills, where Bahun-Chhetri and Janajati populations often split municipalities into two roughly equal blocs. The far-western hills are highly polarized but not particularly diverse. Parts of the eastern Terai are highly diverse but not polarized. The two indices are telling different stories about the same country.</p>
+<p>And here is what clean cooking adoption looks like:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">7</span>))</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>merged.plot(column<span class="op">=</span><span class="st">'clean_cooking'</span>, cmap<span class="op">=</span><span class="st">'YlGn'</span>, edgecolor<span class="op">=</span><span class="st">'grey'</span>, linewidth<span class="op">=</span><span class="fl">0.15</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>            legend<span class="op">=</span><span class="va">True</span>, ax<span class="op">=</span>ax, missing_kwds<span class="op">=</span>{<span class="st">'color'</span>: <span class="st">'lightgrey'</span>},</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>            legend_kwds<span class="op">=</span>{<span class="st">'label'</span>: <span class="st">'Clean cooking rate'</span>, <span class="st">'shrink'</span>: <span class="fl">0.6</span>})</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Clean cooking adoption by municipality, 2021'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>ax.axis(<span class="st">'off'</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><img src="figures/map_actual_cooking.png" class="img-fluid"></p>
+<p>The dark green clusters are where you would expect them: Kathmandu valley, Pokhara, the larger Terai cities. These are the places with LPG distribution networks, paved roads, and household incomes that can absorb the cost of a gas cylinder. The rest of the country is pale. The Karnali region in the far west is almost entirely firewood.</p>
+</section>
+<section id="models" class="level1">
+<h1>Models</h1>
+<section id="model-1-pooled-ols" class="level2">
+<h2 class="anchored" data-anchor-id="model-1-pooled-ols">Model 1: Pooled OLS</h2>
+<p><span class="math display">\[\text{clean\_cooking}_{it} = \beta_0 + \beta_1 \text{div}_{it} + \mathbf{X}_{it}\gamma + \delta_t + \varepsilon_{it}\]</span></p>
+<p>The simplest possible approach. Pool both years, regress clean cooking on the diversity index with controls for household ownership rate, share of male-headed households, literacy of household head, age of household head, and a year dummy. Cluster standard errors at the municipality level.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">reg</span> clean_cooking div_index house_ownership male_head literate_head age_head i.<span class="fu">year</span>, <span class="kw">vce</span>(<span class="kw">cluster</span> mnid)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>                                 (Std. err. adjusted for 753 clusters in mnid)
+------------------------------------------------------------------------------
+             |               Robust
+clean_cooking| Coefficient  std. err.      t    P&gt;|t|
+-------------+----------------------------------------------------------------
+   div_index |    .281015   .0232124    12.11   0.000
+house_owners~|  -1.410214   .1254265   -11.24   0.000
+   male_head |   .0294265   .0339457     0.87   0.386
+literate_head|   .1349062   .0411034     3.28   0.001
+    age_head |  -.0055449   .0014669    -3.78   0.000
+  year(2021) |    .212367   .0071124    29.86   0.000
+       _cons |   1.373306   .1276338    10.76   0.000
+------------------------------------------------------------------------------</code></pre>
+<p>The diversity coefficient is 0.281, significant at the 0.1% level. A one-unit increase in the fractionalization index is associated with 28 percentage points more clean cooking. The t-statistic is 12.11. The R-squared is 0.635. By any textbook standard, this is a strong, convincing result.</p>
+<p>If I had stopped here, I would have written a paper arguing that ethnic diversity drives clean energy transitions through some combination of knowledge diffusion, market integration, and social learning across group boundaries. The mechanism would have sounded plausible. The statistics would have looked solid. And the conclusion would have been wrong.</p>
+<p>The problem is that this regression compares across municipalities. It asks: do places with higher diversity have higher clean cooking rates? They do. But the places that happen to be diverse also happen to be urban, lowland, close to the Indian border where LPG comes from, and wealthier. The diversity coefficient is absorbing all of that.</p>
+</section>
+<section id="model-2-municipality-fixed-effects" class="level2">
+<h2 class="anchored" data-anchor-id="model-2-municipality-fixed-effects">Model 2: Municipality Fixed Effects</h2>
+<p><span class="math display">\[\text{clean\_cooking}_{it} = \alpha_i + \beta_1 \text{div}_{it} + \mathbf{X}_{it}\gamma + \delta_t + \varepsilon_{it}\]</span></p>
+<p>The fix is conceptually simple. Add a municipality fixed effect, <span class="math inline">\(\alpha_i\)</span>, that absorbs every time-invariant characteristic of each municipality: its altitude, its road access, its distance from the border, its historical settlement patterns, its baseline level of development. What remains is within-municipality variation: how did changes in diversity between 2011 and 2021 relate to changes in clean cooking within the same place?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">xtreg</span> clean_cooking div_index house_ownership male_head literate_head age_head i.<span class="fu">year</span>, <span class="kw">fe</span> <span class="kw">vce</span>(<span class="kw">cluster</span> mnid)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>                                 (Std. err. adjusted for 753 clusters in mnid)
+------------------------------------------------------------------------------
+             |               Robust
+clean_cooking| Coefficient  std. err.      t    P&gt;|t|
+-------------+----------------------------------------------------------------
+   div_index |   .0036839   .0433881     0.08   0.932
+house_owners~|  -1.388858   .1671408    -8.31   0.000
+   male_head |  -.1165996    .071964    -1.62   0.106
+literate_head|   .4440605   .0843941     5.26   0.000
+    age_head |  -.0046066   .0035576    -1.29   0.196
+  year(2021) |   .1230307   .0165581     7.43   0.000
+       _cons |    1.45949   .1692622     8.62   0.000
+------------------------------------------------------------------------------</code></pre>
+<p>0.004. P-value 0.932.</p>
+<p>The coefficient didn’t just shrink. It disappeared. Within a municipality, changes in ethnic diversity between 2011 and 2021 have zero relationship with changes in clean cooking adoption. The entire cross-sectional pattern was omitted variable bias.</p>
+<p>I spent an afternoon checking my code when I first saw this. Reran the regressions from scratch. Checked the merge. Recalculated the diversity index. The code was fine. The relationship really was that confounded.</p>
+</section>
+<section id="seeing-the-difference" class="level2">
+<h2 class="anchored" data-anchor-id="seeing-the-difference">Seeing the difference</h2>
+<p>This is where a picture says what a regression table cannot. The left panel plots diversity against clean cooking across municipalities in 2021, the cross-sectional relationship that the pooled OLS was fitting. The right panel plots <em>changes</em> in diversity against <em>changes</em> in clean cooking within the same municipality over the decade.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">6</span>))</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Cross-sectional: diversity vs clean cooking (2021)</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].scatter(d2021[<span class="st">'div_index'</span>], d2021[<span class="st">'clean_cooking'</span>],</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                alpha<span class="op">=</span><span class="fl">0.3</span>, s<span class="op">=</span><span class="dv">10</span>, color<span class="op">=</span><span class="st">'#2c7fb8'</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> np.polyfit(d2021[<span class="st">'div_index'</span>], d2021[<span class="st">'clean_cooking'</span>], <span class="dv">1</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>x_line <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">100</span>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(x_line, z[<span class="dv">0</span>]<span class="op">*</span>x_line <span class="op">+</span> z[<span class="dv">1</span>], color<span class="op">=</span><span class="st">'red'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'Ethnic diversity index'</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">'Clean cooking rate'</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Cross-sectional: diversity vs clean cooking (2021)'</span>)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Within-municipality: change vs change</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].scatter(delta_div, delta_cook, alpha<span class="op">=</span><span class="fl">0.3</span>, s<span class="op">=</span><span class="dv">10</span>, color<span class="op">=</span><span class="st">'#2c7fb8'</span>)</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>z2 <span class="op">=</span> np.polyfit(delta_div[mask], delta_cook[mask], <span class="dv">1</span>)</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>x2 <span class="op">=</span> np.linspace(delta_div[mask].<span class="bu">min</span>(), delta_div[mask].<span class="bu">max</span>(), <span class="dv">100</span>)</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(x2, z2[<span class="dv">0</span>]<span class="op">*</span>x2 <span class="op">+</span> z2[<span class="dv">1</span>], color<span class="op">=</span><span class="st">'red'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'Change in diversity (2011 to 2021)'</span>)</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_ylabel(<span class="st">'Change in clean cooking (2011 to 2021)'</span>)</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Within-municipality: change vs change'</span>)</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><img src="figures/scatter_ols_vs_fe.png" class="img-fluid"></p>
+<p>Cross-sectional slope: 0.570. Within-municipality slope: 0.090.</p>
+<p>The steep red line on the left is the illusion. It says: diverse places cook cleaner. True, but useless. The flat red line on the right is the reality. It says: becoming more diverse does not make a place cook cleaner. The two questions sound similar. They are not the same question. And they produce opposite conclusions.</p>
+<p>This is the oldest lesson in applied econometrics. I had read about it in Angrist and Pischke.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> I had studied it in class. I had nodded along to examples about class size and test scores, hospital quality and mortality rates. And I still fell for it with my own data. The cross-sectional pattern was so clean, so statistically significant, so theoretically plausible, that I did not think to question it until the fixed effects result forced me to.</p>
+</section>
+<section id="model-3-adding-polarization" class="level2">
+<h2 class="anchored" data-anchor-id="model-3-adding-polarization">Model 3: Adding Polarization</h2>
+<p><span class="math display">\[\text{clean\_cooking}_{it} = \alpha_i + \beta_1 \text{div}_{it} + \beta_2 \text{pol}_{it} + \mathbf{X}_{it}\gamma + \delta_t + \varepsilon_{it}\]</span></p>
+<p>If diversity does not matter within municipalities, does anything about ethnic composition matter? I add the polarization index alongside diversity in the fixed effects model.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">xtreg</span> clean_cooking div_index pol_index house_ownership male_head literate_head age_head i.<span class="fu">year</span>, <span class="kw">fe</span> <span class="kw">vce</span>(<span class="kw">cluster</span> mnid)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>                                 (Std. err. adjusted for 753 clusters in mnid)
+------------------------------------------------------------------------------
+             |               Robust
+clean_cooking| Coefficient  std. err.      t    P&gt;|t|
+-------------+----------------------------------------------------------------
+   div_index |  -.0513649   .0429609    -1.20   0.232
+   pol_index |   .2288694   .0275183     8.32   0.000
+house_owners~|  -1.347179   .1637599    -8.23   0.000
+   male_head |  -.1277847   .0705382    -1.81   0.070
+literate_head|   .4641096   .0797292     5.82   0.000
+    age_head |   .0004363   .0034863     0.13   0.900
+  year(2021) |   .0702972   .0173027     4.06   0.000
+       _cons |    1.08972   .1728379     6.30   0.000
+------------------------------------------------------------------------------</code></pre>
+<p>Polarization: 0.229, p &lt; 0.001. Diversity: still dead.</p>
+<p>Within the same municipality over time, a one-unit increase in ethnic polarization is associated with a 23 percentage point increase in clean cooking adoption. This is a large effect with a t-statistic of 8.32.</p>
+<p>Why might polarization drive clean cooking adoption when diversity does not? The intuition comes from political economy. Clean cooking is a private good, you buy LPG for your own household, but it depends on public infrastructure: roads that trucks can drive on to deliver gas cylinders, distribution depots, market access. In municipalities where two or three ethnic groups are roughly equal in size, local elections become competitive. Candidates need to deliver visible improvements to win. Infrastructure investment follows. In highly fragmented municipalities with many small groups, no single group has the electoral weight to demand action, and coordination across groups is harder.</p>
+<p>This is speculative. I do not have the ward-level electoral data to test it directly (though it exists, and I intend to). But the pattern is consistent with a growing body of work in political economy showing that polarization generates competition while fractionalization generates paralysis.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+</section>
+</section>
+<section id="grand-comparison" class="level1">
+<h1>Grand Comparison</h1>
+<pre><code>-----------------------------------------------------------
+    Variable |    OLS         FE (div)      FE (div+pol)
+-------------+---------------------------------------------
+   div_index |  0.281***      0.004         -0.051
+   pol_index |                               0.229***
+house_owner. | -1.410***     -1.389***      -1.347***
+   male_head |  0.029        -0.117         -0.128
+literate_h~d |  0.135**       0.444***       0.464***
+    age_head | -0.006***     -0.005          0.000
+  year(2021) |  0.212***      0.123***       0.070***
+       _cons |  1.373***      1.460***       1.090***
+-------------+---------------------------------------------
+     R-sq    |  0.635         0.719          0.742
+-----------------------------------------------------------
+                   * p&lt;0.05; ** p&lt;0.01; *** p&lt;0.001</code></pre>
+<p>Three things happen as you read this table left to right. First, the diversity coefficient goes from 0.281 to zero. Second, the year dummy drops from 0.212 to 0.070, meaning that much of the nationwide increase in clean cooking between 2011 and 2021 was flowing through municipalities where ethnic polarization was changing. Third, the literacy coefficient triples from 0.135 to 0.464, suggesting that within municipalities, the human capital channel is far more important than the cross-section implied. The OLS was understating it because literacy correlates with other municipality characteristics that the fixed effects now absorb.</p>
+</section>
+<section id="what-i-take-from-this" class="level1">
+<h1>What I take from this</h1>
+<p>I started this project thinking ethnic diversity would straightforwardly predict clean energy adoption. The cross-sectional evidence was strong, statistically significant, and theoretically motivated. It was also almost entirely driven by confounders.</p>
+<p>The fixed effects model taught me two things. First, most of the variation in clean cooking across Nepal has nothing to do with ethnic composition. It has to do with geography, infrastructure, and market access: things that get absorbed by the fixed effect and never show up in any coefficient. Second, the piece of ethnic composition that does predict within-municipality changes is not the piece I expected. It is polarization, not diversity.</p>
+<p>If there is a broader methodological lesson, it is one I should have internalized before I started: always ask whether your regression is comparing across units or within units, and whether the comparison you are making is the one you actually want. The cross-sectional comparison was not. The within-municipality comparison was. They told opposite stories.</p>
+<p>The Stata do-files and Python visualization code are on <a href="https://github.com/abhishekbaraili/ethnicity-energy-nepal">GitHub</a>.</p>
+
+
+<!-- -->
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>CBS Nepal Census 2021. The exact figure is 83.7% of households reporting firewood, cow dung, or other solid fuels as their primary cooking fuel.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>WHO Global Health Estimates (2019). Household air pollution from solid fuel use is the leading environmental risk factor for death in South Asia, responsible for approximately 1.6 million deaths annually across the region.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Alesina, A., Baqir, R., and Easterly, W. (1999). “Public Goods and Ethnic Divisions.” <em>Quarterly Journal of Economics</em>, 114(4), 1243-1284. The index is also known as the ethno-linguistic fractionalization (ELF) index.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>The polarization measure follows Montalvo, J.G. and Reynal-Querol, M. (2005). “Ethnic Polarization, Potential Conflict, and Civil Wars.” <em>American Economic Review</em>, 95(3), 796-816.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Angrist, J.D. and Pischke, J.S. (2009). <em>Mostly Harmless Econometrics: An Empiricist’s Companion</em>. Princeton University Press. Chapter 5 on fixed effects and the distinction between cross-sectional and within-unit variation.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>See especially Esteban, J. and Ray, D. (2011). “Linking Conflict to Inequality and Polarization.” <em>American Economic Review</em>, 101(4), 1345-1374; and Alesina, A. and La Ferrara, E. (2005). “Ethnic Diversity and Economic Performance.” <em>Journal of Economic Literature</em>, 43(3), 762-800.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/abhishekbaraili\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "The diversity illusion: how a cross-sectional regression fooled me"</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "Abhishek Baraili"</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2026-06-28"</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> "I thought ethnic diversity predicted clean cooking adoption across Nepal. Fixed effects killed that story in one regression."</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [Stata, Python, Nepal, causal inference, spatial]</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co">    toc-depth: 2</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: show</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co">    theme: cosmo</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="co">    fig-width: 10</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="co">    fig-height: 6</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="co">    include-in-header:</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="co">      text: |</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="co">        &lt;style&gt;</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="co">        .quarto-title .description { display: none; }</span></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a><span class="co">        .quarto-title .quarto-categories { display: none; }</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="co">        &lt;/style&gt;</span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="co">  warning: false</span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>In Nepal, about 84% of households still cook with firewood.<span class="ot">[^1]</span> The health consequences are severe: indoor air pollution from solid fuel cooking kills more people in South Asia than malaria.<span class="ot">[^2]</span> The transition to clean cooking fuels like LPG, electricity, or biogas is one of the most basic development challenges the country faces, and it is happening unevenly. Some municipalities have almost fully transitioned. Others have barely started.</span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>I wanted to understand why. Specifically, I wanted to know whether the ethnic composition of a municipality, how diverse or divided its population is, has anything to do with how quickly it adopts clean cooking. There are good theoretical reasons to think it might. Ethnically fragmented communities may struggle to coordinate on public goods. Polarized communities, where two or three groups compete for political power, may generate electoral incentives that drive infrastructure investment.</span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>I built a panel dataset covering all 753 of Nepal's municipalities across the 2011 and 2021 censuses and ran three regressions. The first one gave me a large, statistically significant, and completely misleading answer. The second one killed it. The third one replaced it with something I had not expected.</span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>This post is about how I got fooled by my own regression, and what I found when I looked more carefully.</span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a><span class="fu"># Data</span></span>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a>The panel comes from CBS census microdata. I aggregated household-level records to the municipality level using a VDC-to-municipality crosswalk that maps all 3,906 old VDCs to the 753 new municipalities with 100% coverage. The unit of observation is a municipality-year pair: 753 municipalities observed in two census rounds, giving 1,506 observations.</span>
+<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a>panel <span class="op">=</span> pd.read_csv(<span class="st">'panel_full.csv'</span>)</span>
+<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Observations: </span><span class="sc">{</span><span class="bu">len</span>(panel)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Municipalities: </span><span class="sc">{</span>panel[<span class="st">'mnid'</span>]<span class="sc">.</span>nunique()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Years: </span><span class="sc">{</span><span class="bu">sorted</span>(panel[<span class="st">'year'</span>].unique())<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a><span class="in">Observations: 1506</span></span>
+<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a><span class="in">Municipalities: 753</span></span>
+<span id="cb15-48"><a href="#cb15-48" aria-hidden="true" tabindex="-1"></a><span class="in">Years: [2011, 2021]</span></span>
+<span id="cb15-49"><a href="#cb15-49" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-51"><a href="#cb15-51" aria-hidden="true" tabindex="-1"></a>The outcome variable is <span class="in">`clean_cooking`</span>: the share of households in each municipality using LPG, electricity, or biogas as their primary cooking fuel. The mean is 0.16. In a country of 30 million people, that number should bother you.</span>
+<span id="cb15-52"><a href="#cb15-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-53"><a href="#cb15-53" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb15-54"><a href="#cb15-54" aria-hidden="true" tabindex="-1"></a>panel[[<span class="st">'clean_cooking'</span>, <span class="st">'div_index'</span>, <span class="st">'pol_index'</span>]].describe().<span class="bu">round</span>(<span class="dv">4</span>)</span>
+<span id="cb15-55"><a href="#cb15-55" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-56"><a href="#cb15-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-57"><a href="#cb15-57" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-58"><a href="#cb15-58" aria-hidden="true" tabindex="-1"></a><span class="in">       clean_cooking  div_index  pol_index</span></span>
+<span id="cb15-59"><a href="#cb15-59" aria-hidden="true" tabindex="-1"></a><span class="in">count       1506.000   1506.000   1506.000</span></span>
+<span id="cb15-60"><a href="#cb15-60" aria-hidden="true" tabindex="-1"></a><span class="in">mean           0.160      0.608      0.665</span></span>
+<span id="cb15-61"><a href="#cb15-61" aria-hidden="true" tabindex="-1"></a><span class="in">std            0.213      0.179      0.164</span></span>
+<span id="cb15-62"><a href="#cb15-62" aria-hidden="true" tabindex="-1"></a><span class="in">min            0.000      0.013      0.027</span></span>
+<span id="cb15-63"><a href="#cb15-63" aria-hidden="true" tabindex="-1"></a><span class="in">25%            0.024      0.519      0.586</span></span>
+<span id="cb15-64"><a href="#cb15-64" aria-hidden="true" tabindex="-1"></a><span class="in">50%            0.071      0.638      0.703</span></span>
+<span id="cb15-65"><a href="#cb15-65" aria-hidden="true" tabindex="-1"></a><span class="in">75%            0.209      0.733      0.784</span></span>
+<span id="cb15-66"><a href="#cb15-66" aria-hidden="true" tabindex="-1"></a><span class="in">max            0.988      0.930      0.975</span></span>
+<span id="cb15-67"><a href="#cb15-67" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-68"><a href="#cb15-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-69"><a href="#cb15-69" aria-hidden="true" tabindex="-1"></a>The key predictors are two measures of ethnic composition. The first is the standard Alesina et al. (1999) fractionalization index:<span class="ot">[^3]</span></span>
+<span id="cb15-70"><a href="#cb15-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-71"><a href="#cb15-71" aria-hidden="true" tabindex="-1"></a>$$D = 1 - \sum_i s_i^2$$</span>
+<span id="cb15-72"><a href="#cb15-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-73"><a href="#cb15-73" aria-hidden="true" tabindex="-1"></a>where $s_i$ is the population share of ethnic group $i$. This measures the probability that two randomly selected individuals belong to different groups. It is highest when many small groups coexist, as they do in parts of the Terai where Tharu, Madhesi, Brahmin, Chhetri, Magar, and Dalit communities live side by side.</span>
+<span id="cb15-74"><a href="#cb15-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-75"><a href="#cb15-75" aria-hidden="true" tabindex="-1"></a>The polarization index captures something different.<span class="ot">[^4]</span> It is highest not when there are many groups, but when the population splits evenly between a few large ones. A municipality that is 50% Brahmin-Chhetri and 50% Janajati is more polarized than one that has fifteen small ethnic groups, even though the latter is more diverse.</span>
+<span id="cb15-76"><a href="#cb15-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-77"><a href="#cb15-77" aria-hidden="true" tabindex="-1"></a>These are not the same variable. Here is what they look like across Nepal:</span>
+<span id="cb15-78"><a href="#cb15-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-79"><a href="#cb15-79" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb15-80"><a href="#cb15-80" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">16</span>, <span class="dv">7</span>))</span>
+<span id="cb15-81"><a href="#cb15-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-82"><a href="#cb15-82" aria-hidden="true" tabindex="-1"></a>merged.plot(column<span class="op">=</span><span class="st">'div_index'</span>, cmap<span class="op">=</span><span class="st">'PuBu'</span>, edgecolor<span class="op">=</span><span class="st">'grey'</span>, linewidth<span class="op">=</span><span class="fl">0.1</span>,</span>
+<span id="cb15-83"><a href="#cb15-83" aria-hidden="true" tabindex="-1"></a>            legend<span class="op">=</span><span class="va">True</span>, ax<span class="op">=</span>axes[<span class="dv">0</span>], missing_kwds<span class="op">=</span>{<span class="st">'color'</span>: <span class="st">'lightgrey'</span>},</span>
+<span id="cb15-84"><a href="#cb15-84" aria-hidden="true" tabindex="-1"></a>            legend_kwds<span class="op">=</span>{<span class="st">'label'</span>: <span class="st">'Diversity index'</span>, <span class="st">'shrink'</span>: <span class="fl">0.6</span>})</span>
+<span id="cb15-85"><a href="#cb15-85" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Ethnic diversity index, 2021'</span>)</span>
+<span id="cb15-86"><a href="#cb15-86" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axis(<span class="st">'off'</span>)</span>
+<span id="cb15-87"><a href="#cb15-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-88"><a href="#cb15-88" aria-hidden="true" tabindex="-1"></a>merged.plot(column<span class="op">=</span><span class="st">'pol_index'</span>, cmap<span class="op">=</span><span class="st">'OrRd'</span>, edgecolor<span class="op">=</span><span class="st">'grey'</span>, linewidth<span class="op">=</span><span class="fl">0.1</span>,</span>
+<span id="cb15-89"><a href="#cb15-89" aria-hidden="true" tabindex="-1"></a>            legend<span class="op">=</span><span class="va">True</span>, ax<span class="op">=</span>axes[<span class="dv">1</span>], missing_kwds<span class="op">=</span>{<span class="st">'color'</span>: <span class="st">'lightgrey'</span>},</span>
+<span id="cb15-90"><a href="#cb15-90" aria-hidden="true" tabindex="-1"></a>            legend_kwds<span class="op">=</span>{<span class="st">'label'</span>: <span class="st">'Polarization index'</span>, <span class="st">'shrink'</span>: <span class="fl">0.6</span>})</span>
+<span id="cb15-91"><a href="#cb15-91" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Ethnic polarization index, 2021'</span>)</span>
+<span id="cb15-92"><a href="#cb15-92" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].axis(<span class="st">'off'</span>)</span>
+<span id="cb15-93"><a href="#cb15-93" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb15-94"><a href="#cb15-94" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-95"><a href="#cb15-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-96"><a href="#cb15-96" aria-hidden="true" tabindex="-1"></a><span class="al">![](figures/map_diversity_polarization.png)</span></span>
+<span id="cb15-97"><a href="#cb15-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-98"><a href="#cb15-98" aria-hidden="true" tabindex="-1"></a>The spatial patterns are visibly different. Diversity peaks in the Terai, the southern plains where migration and historical trade routes have mixed populations over centuries. Polarization is strongest in the mid-hills, where Bahun-Chhetri and Janajati populations often split municipalities into two roughly equal blocs. The far-western hills are highly polarized but not particularly diverse. Parts of the eastern Terai are highly diverse but not polarized. The two indices are telling different stories about the same country.</span>
+<span id="cb15-99"><a href="#cb15-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-100"><a href="#cb15-100" aria-hidden="true" tabindex="-1"></a>And here is what clean cooking adoption looks like:</span>
+<span id="cb15-101"><a href="#cb15-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-102"><a href="#cb15-102" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb15-103"><a href="#cb15-103" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">7</span>))</span>
+<span id="cb15-104"><a href="#cb15-104" aria-hidden="true" tabindex="-1"></a>merged.plot(column<span class="op">=</span><span class="st">'clean_cooking'</span>, cmap<span class="op">=</span><span class="st">'YlGn'</span>, edgecolor<span class="op">=</span><span class="st">'grey'</span>, linewidth<span class="op">=</span><span class="fl">0.15</span>,</span>
+<span id="cb15-105"><a href="#cb15-105" aria-hidden="true" tabindex="-1"></a>            legend<span class="op">=</span><span class="va">True</span>, ax<span class="op">=</span>ax, missing_kwds<span class="op">=</span>{<span class="st">'color'</span>: <span class="st">'lightgrey'</span>},</span>
+<span id="cb15-106"><a href="#cb15-106" aria-hidden="true" tabindex="-1"></a>            legend_kwds<span class="op">=</span>{<span class="st">'label'</span>: <span class="st">'Clean cooking rate'</span>, <span class="st">'shrink'</span>: <span class="fl">0.6</span>})</span>
+<span id="cb15-107"><a href="#cb15-107" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Clean cooking adoption by municipality, 2021'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb15-108"><a href="#cb15-108" aria-hidden="true" tabindex="-1"></a>ax.axis(<span class="st">'off'</span>)</span>
+<span id="cb15-109"><a href="#cb15-109" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb15-110"><a href="#cb15-110" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-111"><a href="#cb15-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-112"><a href="#cb15-112" aria-hidden="true" tabindex="-1"></a><span class="al">![](figures/map_actual_cooking.png)</span></span>
+<span id="cb15-113"><a href="#cb15-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-114"><a href="#cb15-114" aria-hidden="true" tabindex="-1"></a>The dark green clusters are where you would expect them: Kathmandu valley, Pokhara, the larger Terai cities. These are the places with LPG distribution networks, paved roads, and household incomes that can absorb the cost of a gas cylinder. The rest of the country is pale. The Karnali region in the far west is almost entirely firewood.</span>
+<span id="cb15-115"><a href="#cb15-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-116"><a href="#cb15-116" aria-hidden="true" tabindex="-1"></a><span class="fu"># Models</span></span>
+<span id="cb15-117"><a href="#cb15-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-118"><a href="#cb15-118" aria-hidden="true" tabindex="-1"></a><span class="fu">## Model 1: Pooled OLS</span></span>
+<span id="cb15-119"><a href="#cb15-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-120"><a href="#cb15-120" aria-hidden="true" tabindex="-1"></a>$$\text{clean<span class="sc">\_</span>cooking}_{it} = \beta_0 + \beta_1 \text{div}_{it} + \mathbf{X}_{it}\gamma + \delta_t + \varepsilon_{it}$$</span>
+<span id="cb15-121"><a href="#cb15-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-122"><a href="#cb15-122" aria-hidden="true" tabindex="-1"></a>The simplest possible approach. Pool both years, regress clean cooking on the diversity index with controls for household ownership rate, share of male-headed households, literacy of household head, age of household head, and a year dummy. Cluster standard errors at the municipality level.</span>
+<span id="cb15-123"><a href="#cb15-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-124"><a href="#cb15-124" aria-hidden="true" tabindex="-1"></a><span class="in">```stata</span></span>
+<span id="cb15-125"><a href="#cb15-125" aria-hidden="true" tabindex="-1"></a><span class="in">reg clean_cooking div_index house_ownership male_head literate_head age_head i.year, vce(cluster mnid)</span></span>
+<span id="cb15-126"><a href="#cb15-126" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-127"><a href="#cb15-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-128"><a href="#cb15-128" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-129"><a href="#cb15-129" aria-hidden="true" tabindex="-1"></a><span class="in">                                 (Std. err. adjusted for 753 clusters in mnid)</span></span>
+<span id="cb15-130"><a href="#cb15-130" aria-hidden="true" tabindex="-1"></a><span class="in">------------------------------------------------------------------------------</span></span>
+<span id="cb15-131"><a href="#cb15-131" aria-hidden="true" tabindex="-1"></a><span class="in">             |               Robust</span></span>
+<span id="cb15-132"><a href="#cb15-132" aria-hidden="true" tabindex="-1"></a><span class="in">clean_cooking| Coefficient  std. err.      t    P&gt;|t|</span></span>
+<span id="cb15-133"><a href="#cb15-133" aria-hidden="true" tabindex="-1"></a><span class="in">-------------+----------------------------------------------------------------</span></span>
+<span id="cb15-134"><a href="#cb15-134" aria-hidden="true" tabindex="-1"></a><span class="in">   div_index |    .281015   .0232124    12.11   0.000</span></span>
+<span id="cb15-135"><a href="#cb15-135" aria-hidden="true" tabindex="-1"></a><span class="in">house_owners~|  -1.410214   .1254265   -11.24   0.000</span></span>
+<span id="cb15-136"><a href="#cb15-136" aria-hidden="true" tabindex="-1"></a><span class="in">   male_head |   .0294265   .0339457     0.87   0.386</span></span>
+<span id="cb15-137"><a href="#cb15-137" aria-hidden="true" tabindex="-1"></a><span class="in">literate_head|   .1349062   .0411034     3.28   0.001</span></span>
+<span id="cb15-138"><a href="#cb15-138" aria-hidden="true" tabindex="-1"></a><span class="in">    age_head |  -.0055449   .0014669    -3.78   0.000</span></span>
+<span id="cb15-139"><a href="#cb15-139" aria-hidden="true" tabindex="-1"></a><span class="in">  year(2021) |    .212367   .0071124    29.86   0.000</span></span>
+<span id="cb15-140"><a href="#cb15-140" aria-hidden="true" tabindex="-1"></a><span class="in">       _cons |   1.373306   .1276338    10.76   0.000</span></span>
+<span id="cb15-141"><a href="#cb15-141" aria-hidden="true" tabindex="-1"></a><span class="in">------------------------------------------------------------------------------</span></span>
+<span id="cb15-142"><a href="#cb15-142" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-143"><a href="#cb15-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-144"><a href="#cb15-144" aria-hidden="true" tabindex="-1"></a>The diversity coefficient is 0.281, significant at the 0.1% level. A one-unit increase in the fractionalization index is associated with 28 percentage points more clean cooking. The t-statistic is 12.11. The R-squared is 0.635. By any textbook standard, this is a strong, convincing result.</span>
+<span id="cb15-145"><a href="#cb15-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-146"><a href="#cb15-146" aria-hidden="true" tabindex="-1"></a>If I had stopped here, I would have written a paper arguing that ethnic diversity drives clean energy transitions through some combination of knowledge diffusion, market integration, and social learning across group boundaries. The mechanism would have sounded plausible. The statistics would have looked solid. And the conclusion would have been wrong.</span>
+<span id="cb15-147"><a href="#cb15-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-148"><a href="#cb15-148" aria-hidden="true" tabindex="-1"></a>The problem is that this regression compares across municipalities. It asks: do places with higher diversity have higher clean cooking rates? They do. But the places that happen to be diverse also happen to be urban, lowland, close to the Indian border where LPG comes from, and wealthier. The diversity coefficient is absorbing all of that.</span>
+<span id="cb15-149"><a href="#cb15-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-150"><a href="#cb15-150" aria-hidden="true" tabindex="-1"></a><span class="fu">## Model 2: Municipality Fixed Effects</span></span>
+<span id="cb15-151"><a href="#cb15-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-152"><a href="#cb15-152" aria-hidden="true" tabindex="-1"></a>$$\text{clean<span class="sc">\_</span>cooking}_{it} = \alpha_i + \beta_1 \text{div}_{it} + \mathbf{X}_{it}\gamma + \delta_t + \varepsilon_{it}$$</span>
+<span id="cb15-153"><a href="#cb15-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-154"><a href="#cb15-154" aria-hidden="true" tabindex="-1"></a>The fix is conceptually simple. Add a municipality fixed effect, $\alpha_i$, that absorbs every time-invariant characteristic of each municipality: its altitude, its road access, its distance from the border, its historical settlement patterns, its baseline level of development. What remains is within-municipality variation: how did changes in diversity between 2011 and 2021 relate to changes in clean cooking within the same place?</span>
+<span id="cb15-155"><a href="#cb15-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-156"><a href="#cb15-156" aria-hidden="true" tabindex="-1"></a><span class="in">```stata</span></span>
+<span id="cb15-157"><a href="#cb15-157" aria-hidden="true" tabindex="-1"></a><span class="in">xtreg clean_cooking div_index house_ownership male_head literate_head age_head i.year, fe vce(cluster mnid)</span></span>
+<span id="cb15-158"><a href="#cb15-158" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-159"><a href="#cb15-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-160"><a href="#cb15-160" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-161"><a href="#cb15-161" aria-hidden="true" tabindex="-1"></a><span class="in">                                 (Std. err. adjusted for 753 clusters in mnid)</span></span>
+<span id="cb15-162"><a href="#cb15-162" aria-hidden="true" tabindex="-1"></a><span class="in">------------------------------------------------------------------------------</span></span>
+<span id="cb15-163"><a href="#cb15-163" aria-hidden="true" tabindex="-1"></a><span class="in">             |               Robust</span></span>
+<span id="cb15-164"><a href="#cb15-164" aria-hidden="true" tabindex="-1"></a><span class="in">clean_cooking| Coefficient  std. err.      t    P&gt;|t|</span></span>
+<span id="cb15-165"><a href="#cb15-165" aria-hidden="true" tabindex="-1"></a><span class="in">-------------+----------------------------------------------------------------</span></span>
+<span id="cb15-166"><a href="#cb15-166" aria-hidden="true" tabindex="-1"></a><span class="in">   div_index |   .0036839   .0433881     0.08   0.932</span></span>
+<span id="cb15-167"><a href="#cb15-167" aria-hidden="true" tabindex="-1"></a><span class="in">house_owners~|  -1.388858   .1671408    -8.31   0.000</span></span>
+<span id="cb15-168"><a href="#cb15-168" aria-hidden="true" tabindex="-1"></a><span class="in">   male_head |  -.1165996    .071964    -1.62   0.106</span></span>
+<span id="cb15-169"><a href="#cb15-169" aria-hidden="true" tabindex="-1"></a><span class="in">literate_head|   .4440605   .0843941     5.26   0.000</span></span>
+<span id="cb15-170"><a href="#cb15-170" aria-hidden="true" tabindex="-1"></a><span class="in">    age_head |  -.0046066   .0035576    -1.29   0.196</span></span>
+<span id="cb15-171"><a href="#cb15-171" aria-hidden="true" tabindex="-1"></a><span class="in">  year(2021) |   .1230307   .0165581     7.43   0.000</span></span>
+<span id="cb15-172"><a href="#cb15-172" aria-hidden="true" tabindex="-1"></a><span class="in">       _cons |    1.45949   .1692622     8.62   0.000</span></span>
+<span id="cb15-173"><a href="#cb15-173" aria-hidden="true" tabindex="-1"></a><span class="in">------------------------------------------------------------------------------</span></span>
+<span id="cb15-174"><a href="#cb15-174" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-175"><a href="#cb15-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-176"><a href="#cb15-176" aria-hidden="true" tabindex="-1"></a>0.004. P-value 0.932.</span>
+<span id="cb15-177"><a href="#cb15-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-178"><a href="#cb15-178" aria-hidden="true" tabindex="-1"></a>The coefficient didn't just shrink. It disappeared. Within a municipality, changes in ethnic diversity between 2011 and 2021 have zero relationship with changes in clean cooking adoption. The entire cross-sectional pattern was omitted variable bias.</span>
+<span id="cb15-179"><a href="#cb15-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-180"><a href="#cb15-180" aria-hidden="true" tabindex="-1"></a>I spent an afternoon checking my code when I first saw this. Reran the regressions from scratch. Checked the merge. Recalculated the diversity index. The code was fine. The relationship really was that confounded.</span>
+<span id="cb15-181"><a href="#cb15-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-182"><a href="#cb15-182" aria-hidden="true" tabindex="-1"></a><span class="fu">## Seeing the difference</span></span>
+<span id="cb15-183"><a href="#cb15-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-184"><a href="#cb15-184" aria-hidden="true" tabindex="-1"></a>This is where a picture says what a regression table cannot. The left panel plots diversity against clean cooking across municipalities in 2021, the cross-sectional relationship that the pooled OLS was fitting. The right panel plots *changes* in diversity against *changes* in clean cooking within the same municipality over the decade.</span>
+<span id="cb15-185"><a href="#cb15-185" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-186"><a href="#cb15-186" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb15-187"><a href="#cb15-187" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">6</span>))</span>
+<span id="cb15-188"><a href="#cb15-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-189"><a href="#cb15-189" aria-hidden="true" tabindex="-1"></a><span class="co"># Cross-sectional: diversity vs clean cooking (2021)</span></span>
+<span id="cb15-190"><a href="#cb15-190" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].scatter(d2021[<span class="st">'div_index'</span>], d2021[<span class="st">'clean_cooking'</span>],</span>
+<span id="cb15-191"><a href="#cb15-191" aria-hidden="true" tabindex="-1"></a>                alpha<span class="op">=</span><span class="fl">0.3</span>, s<span class="op">=</span><span class="dv">10</span>, color<span class="op">=</span><span class="st">'#2c7fb8'</span>)</span>
+<span id="cb15-192"><a href="#cb15-192" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> np.polyfit(d2021[<span class="st">'div_index'</span>], d2021[<span class="st">'clean_cooking'</span>], <span class="dv">1</span>)</span>
+<span id="cb15-193"><a href="#cb15-193" aria-hidden="true" tabindex="-1"></a>x_line <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">100</span>)</span>
+<span id="cb15-194"><a href="#cb15-194" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(x_line, z[<span class="dv">0</span>]<span class="op">*</span>x_line <span class="op">+</span> z[<span class="dv">1</span>], color<span class="op">=</span><span class="st">'red'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb15-195"><a href="#cb15-195" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'Ethnic diversity index'</span>)</span>
+<span id="cb15-196"><a href="#cb15-196" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">'Clean cooking rate'</span>)</span>
+<span id="cb15-197"><a href="#cb15-197" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Cross-sectional: diversity vs clean cooking (2021)'</span>)</span>
+<span id="cb15-198"><a href="#cb15-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-199"><a href="#cb15-199" aria-hidden="true" tabindex="-1"></a><span class="co"># Within-municipality: change vs change</span></span>
+<span id="cb15-200"><a href="#cb15-200" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].scatter(delta_div, delta_cook, alpha<span class="op">=</span><span class="fl">0.3</span>, s<span class="op">=</span><span class="dv">10</span>, color<span class="op">=</span><span class="st">'#2c7fb8'</span>)</span>
+<span id="cb15-201"><a href="#cb15-201" aria-hidden="true" tabindex="-1"></a>z2 <span class="op">=</span> np.polyfit(delta_div[mask], delta_cook[mask], <span class="dv">1</span>)</span>
+<span id="cb15-202"><a href="#cb15-202" aria-hidden="true" tabindex="-1"></a>x2 <span class="op">=</span> np.linspace(delta_div[mask].<span class="bu">min</span>(), delta_div[mask].<span class="bu">max</span>(), <span class="dv">100</span>)</span>
+<span id="cb15-203"><a href="#cb15-203" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(x2, z2[<span class="dv">0</span>]<span class="op">*</span>x2 <span class="op">+</span> z2[<span class="dv">1</span>], color<span class="op">=</span><span class="st">'red'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb15-204"><a href="#cb15-204" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'Change in diversity (2011 to 2021)'</span>)</span>
+<span id="cb15-205"><a href="#cb15-205" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_ylabel(<span class="st">'Change in clean cooking (2011 to 2021)'</span>)</span>
+<span id="cb15-206"><a href="#cb15-206" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Within-municipality: change vs change'</span>)</span>
+<span id="cb15-207"><a href="#cb15-207" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb15-208"><a href="#cb15-208" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-209"><a href="#cb15-209" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-210"><a href="#cb15-210" aria-hidden="true" tabindex="-1"></a><span class="al">![](figures/scatter_ols_vs_fe.png)</span></span>
+<span id="cb15-211"><a href="#cb15-211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-212"><a href="#cb15-212" aria-hidden="true" tabindex="-1"></a>Cross-sectional slope: 0.570. Within-municipality slope: 0.090.</span>
+<span id="cb15-213"><a href="#cb15-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-214"><a href="#cb15-214" aria-hidden="true" tabindex="-1"></a>The steep red line on the left is the illusion. It says: diverse places cook cleaner. True, but useless. The flat red line on the right is the reality. It says: becoming more diverse does not make a place cook cleaner. The two questions sound similar. They are not the same question. And they produce opposite conclusions.</span>
+<span id="cb15-215"><a href="#cb15-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-216"><a href="#cb15-216" aria-hidden="true" tabindex="-1"></a>This is the oldest lesson in applied econometrics. I had read about it in Angrist and Pischke.<span class="ot">[^5]</span> I had studied it in class. I had nodded along to examples about class size and test scores, hospital quality and mortality rates. And I still fell for it with my own data. The cross-sectional pattern was so clean, so statistically significant, so theoretically plausible, that I did not think to question it until the fixed effects result forced me to.</span>
+<span id="cb15-217"><a href="#cb15-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-218"><a href="#cb15-218" aria-hidden="true" tabindex="-1"></a><span class="fu">## Model 3: Adding Polarization</span></span>
+<span id="cb15-219"><a href="#cb15-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-220"><a href="#cb15-220" aria-hidden="true" tabindex="-1"></a>$$\text{clean<span class="sc">\_</span>cooking}_{it} = \alpha_i + \beta_1 \text{div}_{it} + \beta_2 \text{pol}_{it} + \mathbf{X}_{it}\gamma + \delta_t + \varepsilon_{it}$$</span>
+<span id="cb15-221"><a href="#cb15-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-222"><a href="#cb15-222" aria-hidden="true" tabindex="-1"></a>If diversity does not matter within municipalities, does anything about ethnic composition matter? I add the polarization index alongside diversity in the fixed effects model.</span>
+<span id="cb15-223"><a href="#cb15-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-224"><a href="#cb15-224" aria-hidden="true" tabindex="-1"></a><span class="in">```stata</span></span>
+<span id="cb15-225"><a href="#cb15-225" aria-hidden="true" tabindex="-1"></a><span class="in">xtreg clean_cooking div_index pol_index house_ownership male_head literate_head age_head i.year, fe vce(cluster mnid)</span></span>
+<span id="cb15-226"><a href="#cb15-226" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-227"><a href="#cb15-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-228"><a href="#cb15-228" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-229"><a href="#cb15-229" aria-hidden="true" tabindex="-1"></a><span class="in">                                 (Std. err. adjusted for 753 clusters in mnid)</span></span>
+<span id="cb15-230"><a href="#cb15-230" aria-hidden="true" tabindex="-1"></a><span class="in">------------------------------------------------------------------------------</span></span>
+<span id="cb15-231"><a href="#cb15-231" aria-hidden="true" tabindex="-1"></a><span class="in">             |               Robust</span></span>
+<span id="cb15-232"><a href="#cb15-232" aria-hidden="true" tabindex="-1"></a><span class="in">clean_cooking| Coefficient  std. err.      t    P&gt;|t|</span></span>
+<span id="cb15-233"><a href="#cb15-233" aria-hidden="true" tabindex="-1"></a><span class="in">-------------+----------------------------------------------------------------</span></span>
+<span id="cb15-234"><a href="#cb15-234" aria-hidden="true" tabindex="-1"></a><span class="in">   div_index |  -.0513649   .0429609    -1.20   0.232</span></span>
+<span id="cb15-235"><a href="#cb15-235" aria-hidden="true" tabindex="-1"></a><span class="in">   pol_index |   .2288694   .0275183     8.32   0.000</span></span>
+<span id="cb15-236"><a href="#cb15-236" aria-hidden="true" tabindex="-1"></a><span class="in">house_owners~|  -1.347179   .1637599    -8.23   0.000</span></span>
+<span id="cb15-237"><a href="#cb15-237" aria-hidden="true" tabindex="-1"></a><span class="in">   male_head |  -.1277847   .0705382    -1.81   0.070</span></span>
+<span id="cb15-238"><a href="#cb15-238" aria-hidden="true" tabindex="-1"></a><span class="in">literate_head|   .4641096   .0797292     5.82   0.000</span></span>
+<span id="cb15-239"><a href="#cb15-239" aria-hidden="true" tabindex="-1"></a><span class="in">    age_head |   .0004363   .0034863     0.13   0.900</span></span>
+<span id="cb15-240"><a href="#cb15-240" aria-hidden="true" tabindex="-1"></a><span class="in">  year(2021) |   .0702972   .0173027     4.06   0.000</span></span>
+<span id="cb15-241"><a href="#cb15-241" aria-hidden="true" tabindex="-1"></a><span class="in">       _cons |    1.08972   .1728379     6.30   0.000</span></span>
+<span id="cb15-242"><a href="#cb15-242" aria-hidden="true" tabindex="-1"></a><span class="in">------------------------------------------------------------------------------</span></span>
+<span id="cb15-243"><a href="#cb15-243" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-244"><a href="#cb15-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-245"><a href="#cb15-245" aria-hidden="true" tabindex="-1"></a>Polarization: 0.229, p &lt; 0.001. Diversity: still dead.</span>
+<span id="cb15-246"><a href="#cb15-246" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-247"><a href="#cb15-247" aria-hidden="true" tabindex="-1"></a>Within the same municipality over time, a one-unit increase in ethnic polarization is associated with a 23 percentage point increase in clean cooking adoption. This is a large effect with a t-statistic of 8.32.</span>
+<span id="cb15-248"><a href="#cb15-248" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-249"><a href="#cb15-249" aria-hidden="true" tabindex="-1"></a>Why might polarization drive clean cooking adoption when diversity does not? The intuition comes from political economy. Clean cooking is a private good, you buy LPG for your own household, but it depends on public infrastructure: roads that trucks can drive on to deliver gas cylinders, distribution depots, market access. In municipalities where two or three ethnic groups are roughly equal in size, local elections become competitive. Candidates need to deliver visible improvements to win. Infrastructure investment follows. In highly fragmented municipalities with many small groups, no single group has the electoral weight to demand action, and coordination across groups is harder.</span>
+<span id="cb15-250"><a href="#cb15-250" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-251"><a href="#cb15-251" aria-hidden="true" tabindex="-1"></a>This is speculative. I do not have the ward-level electoral data to test it directly (though it exists, and I intend to). But the pattern is consistent with a growing body of work in political economy showing that polarization generates competition while fractionalization generates paralysis.<span class="ot">[^6]</span></span>
+<span id="cb15-252"><a href="#cb15-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-253"><a href="#cb15-253" aria-hidden="true" tabindex="-1"></a><span class="fu"># Grand Comparison</span></span>
+<span id="cb15-254"><a href="#cb15-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-255"><a href="#cb15-255" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-256"><a href="#cb15-256" aria-hidden="true" tabindex="-1"></a><span class="in">-----------------------------------------------------------</span></span>
+<span id="cb15-257"><a href="#cb15-257" aria-hidden="true" tabindex="-1"></a><span class="in">    Variable |    OLS         FE (div)      FE (div+pol)</span></span>
+<span id="cb15-258"><a href="#cb15-258" aria-hidden="true" tabindex="-1"></a><span class="in">-------------+---------------------------------------------</span></span>
+<span id="cb15-259"><a href="#cb15-259" aria-hidden="true" tabindex="-1"></a><span class="in">   div_index |  0.281***      0.004         -0.051</span></span>
+<span id="cb15-260"><a href="#cb15-260" aria-hidden="true" tabindex="-1"></a><span class="in">   pol_index |                               0.229***</span></span>
+<span id="cb15-261"><a href="#cb15-261" aria-hidden="true" tabindex="-1"></a><span class="in">house_owner. | -1.410***     -1.389***      -1.347***</span></span>
+<span id="cb15-262"><a href="#cb15-262" aria-hidden="true" tabindex="-1"></a><span class="in">   male_head |  0.029        -0.117         -0.128</span></span>
+<span id="cb15-263"><a href="#cb15-263" aria-hidden="true" tabindex="-1"></a><span class="in">literate_h~d |  0.135**       0.444***       0.464***</span></span>
+<span id="cb15-264"><a href="#cb15-264" aria-hidden="true" tabindex="-1"></a><span class="in">    age_head | -0.006***     -0.005          0.000</span></span>
+<span id="cb15-265"><a href="#cb15-265" aria-hidden="true" tabindex="-1"></a><span class="in">  year(2021) |  0.212***      0.123***       0.070***</span></span>
+<span id="cb15-266"><a href="#cb15-266" aria-hidden="true" tabindex="-1"></a><span class="in">       _cons |  1.373***      1.460***       1.090***</span></span>
+<span id="cb15-267"><a href="#cb15-267" aria-hidden="true" tabindex="-1"></a><span class="in">-------------+---------------------------------------------</span></span>
+<span id="cb15-268"><a href="#cb15-268" aria-hidden="true" tabindex="-1"></a><span class="in">     R-sq    |  0.635         0.719          0.742</span></span>
+<span id="cb15-269"><a href="#cb15-269" aria-hidden="true" tabindex="-1"></a><span class="in">-----------------------------------------------------------</span></span>
+<span id="cb15-270"><a href="#cb15-270" aria-hidden="true" tabindex="-1"></a><span class="in">                   * p&lt;0.05; ** p&lt;0.01; *** p&lt;0.001</span></span>
+<span id="cb15-271"><a href="#cb15-271" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-272"><a href="#cb15-272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-273"><a href="#cb15-273" aria-hidden="true" tabindex="-1"></a>Three things happen as you read this table left to right. First, the diversity coefficient goes from 0.281 to zero. Second, the year dummy drops from 0.212 to 0.070, meaning that much of the nationwide increase in clean cooking between 2011 and 2021 was flowing through municipalities where ethnic polarization was changing. Third, the literacy coefficient triples from 0.135 to 0.464, suggesting that within municipalities, the human capital channel is far more important than the cross-section implied. The OLS was understating it because literacy correlates with other municipality characteristics that the fixed effects now absorb.</span>
+<span id="cb15-274"><a href="#cb15-274" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-275"><a href="#cb15-275" aria-hidden="true" tabindex="-1"></a><span class="fu"># What I take from this</span></span>
+<span id="cb15-276"><a href="#cb15-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-277"><a href="#cb15-277" aria-hidden="true" tabindex="-1"></a>I started this project thinking ethnic diversity would straightforwardly predict clean energy adoption. The cross-sectional evidence was strong, statistically significant, and theoretically motivated. It was also almost entirely driven by confounders.</span>
+<span id="cb15-278"><a href="#cb15-278" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-279"><a href="#cb15-279" aria-hidden="true" tabindex="-1"></a>The fixed effects model taught me two things. First, most of the variation in clean cooking across Nepal has nothing to do with ethnic composition. It has to do with geography, infrastructure, and market access: things that get absorbed by the fixed effect and never show up in any coefficient. Second, the piece of ethnic composition that does predict within-municipality changes is not the piece I expected. It is polarization, not diversity.</span>
+<span id="cb15-280"><a href="#cb15-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-281"><a href="#cb15-281" aria-hidden="true" tabindex="-1"></a>If there is a broader methodological lesson, it is one I should have internalized before I started: always ask whether your regression is comparing across units or within units, and whether the comparison you are making is the one you actually want. The cross-sectional comparison was not. The within-municipality comparison was. They told opposite stories.</span>
+<span id="cb15-282"><a href="#cb15-282" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-283"><a href="#cb15-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-284"><a href="#cb15-284" aria-hidden="true" tabindex="-1"></a><span class="ot">[^1]: </span>CBS Nepal Census 2021. The exact figure is 83.7% of households reporting firewood, cow dung, or other solid fuels as their primary cooking fuel.</span>
+<span id="cb15-285"><a href="#cb15-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-286"><a href="#cb15-286" aria-hidden="true" tabindex="-1"></a><span class="ot">[^2]: </span>WHO Global Health Estimates (2019). Household air pollution from solid fuel use is the leading environmental risk factor for death in South Asia, responsible for approximately 1.6 million deaths annually across the region.</span>
+<span id="cb15-287"><a href="#cb15-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-288"><a href="#cb15-288" aria-hidden="true" tabindex="-1"></a><span class="ot">[^3]: </span>Alesina, A., Baqir, R., and Easterly, W. (1999). "Public Goods and Ethnic Divisions." *Quarterly Journal of Economics*, 114(4), 1243-1284. The index is also known as the ethno-linguistic fractionalization (ELF) index.</span>
+<span id="cb15-289"><a href="#cb15-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-290"><a href="#cb15-290" aria-hidden="true" tabindex="-1"></a><span class="ot">[^4]: </span>The polarization measure follows Montalvo, J.G. and Reynal-Querol, M. (2005). "Ethnic Polarization, Potential Conflict, and Civil Wars." *American Economic Review*, 95(3), 796-816.</span>
+<span id="cb15-291"><a href="#cb15-291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-292"><a href="#cb15-292" aria-hidden="true" tabindex="-1"></a><span class="ot">[^5]: </span>Angrist, J.D. and Pischke, J.S. (2009). *Mostly Harmless Econometrics: An Empiricist's Companion*. Princeton University Press. Chapter 5 on fixed effects and the distinction between cross-sectional and within-unit variation.</span>
+<span id="cb15-293"><a href="#cb15-293" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-294"><a href="#cb15-294" aria-hidden="true" tabindex="-1"></a><span class="ot">[^6]: </span>See especially Esteban, J. and Ray, D. (2011). "Linking Conflict to Inequality and Polarization." *American Economic Review*, 101(4), 1345-1374; and Alesina, A. and La Ferrara, E. (2005). "Ethnic Diversity and Economic Performance." *Journal of Economic Literature*, 43(3), 762-800.</span>
+<span id="cb15-295"><a href="#cb15-295" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-296"><a href="#cb15-296" aria-hidden="true" tabindex="-1"></a>The Stata do-files and Python visualization code are on <span class="co">[</span><span class="ot">GitHub</span><span class="co">](https://github.com/abhishekbaraili/ethnicity-energy-nepal)</span>.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
