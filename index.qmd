@@ -57,7 +57,7 @@ page-layout: full
 ```
 ```{=html}
 <div style="margin-top:3rem;">
-  <h2 style="font-size:1.4rem; font-weight:600; margin-bottom:1.2rem;">Research</h2>
+  <h2 style="font-size:1.4rem; font-weight:600; margin-bottom:1.2rem;">Undergraduate Research</h2>
 
   <div style="border:1px solid #e0e0e0; border-radius:10px; padding:1.2rem 1.5rem; margin-bottom:1rem;">
     <div style="font-weight:600; font-size:1rem; margin-bottom:0.3rem;">Ward-Chair Identity and Drinking Water Access: Evidence from Nepal</div>
