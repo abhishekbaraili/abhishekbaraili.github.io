@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "Abhishek Baraili",
     "section": "",
-    "text": "Previous\n      \n      \n        \n        Next\n      \n    \n  \n\n  \n    अभिशेक बराइली\n\n    \n       GitHub\n       LinkedIn\n       Email\n    \n\n    I am a final-year economics undergraduate. I work on applied statistics and causal inference, mostly with Nepali data.\n\n    This site is where I write up short projects: one question, a research design, and whatever it takes in R, Python, or Stata to answer it. Some work, some don't."
+    "text": "Previous\n      \n      \n        \n        Next\n      \n    \n  \n\n  \n    अभिशेक बराइली\n\n    \n       GitHub\n       LinkedIn\n       Email\n    \n\n    I am a final-year economics undergraduate. I work on applied statistics and causal inference, mostly with Nepali data.\n\n    This site is where I write up short projects: one question, a research design, and whatever it takes in R, Python, or Stata to answer it. Some work, some don't.\n  \n\n\n\n  Research\n\n  \n    Caste, Capture, and Water Access: Evidence from Close Ward Elections in Nepal\n    Undergraduate Thesis · Sharp RDD · 2025\n    Uses a close-election RDD on Nepal's 2017 ward chairperson races to estimate whether electing a Bahun/Chhetri candidate affects ward-level access to tapped drinking water (CBS Census 2021). Pooled null result with a suggestive BC vs. Dalit finding (+26.9 pp, p=0.083, N=79).\n     Replication package"
   },
   {
     "objectID": "posts/index.html",
