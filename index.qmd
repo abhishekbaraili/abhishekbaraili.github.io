@@ -60,7 +60,7 @@ page-layout: full
   <h2 style="font-size:1.4rem; font-weight:600; margin-bottom:1.2rem;">Research</h2>
 
   <div style="border:1px solid #e0e0e0; border-radius:10px; padding:1.2rem 1.5rem; margin-bottom:1rem;">
-    <div style="font-weight:600; font-size:1rem; margin-bottom:0.3rem;">Caste, Capture, and Water Access: Evidence from Close Ward Elections in Nepal</div>
+    <div style="font-weight:600; font-size:1rem; margin-bottom:0.3rem;">Ward-Chair Identity and Drinking Water Access: Evidence from Nepal</div>
     <div style="font-size:0.9rem; color:#555; margin-bottom:0.7rem;">Undergraduate Thesis · Sharp RDD · 2025</div>
     <p style="font-size:0.9rem; margin-bottom:0.8rem;">Uses a close-election RDD on Nepal's 2017 ward chairperson races to estimate whether electing a Bahun/Chhetri candidate affects ward-level access to tapped drinking water (CBS Census 2021). Pooled null result with a suggestive BC vs. Dalit finding (+26.9 pp, p=0.083, N=79).</p>
     <a href="https://github.com/abhishekbaraili/caste-water-rdd-nepal" class="btn btn-outline-dark btn-sm"><i class="bi bi-github"></i> Replication package</a>
